@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bust'DD - Bra Size Calculator</title>
+  <meta charset="utf-8" />
+
+
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+
+  <link href="bootstrap.min.css" rel="stylesheet" media="screen">
+  <script src="bootstrap.min.js"></script>
+
+  <link href='http://fonts.googleapis.com/css?family=Titillium+Web' rel='stylesheet' type='text/css' />
+
+  <script>
+
+    var bustval = null;
+    var bandval = null;
+    var brasize = null;
+
+    function showResult(){
+      adjustBraResult();
+
+      $('#braresult').show();
+      $('#braresulttext').show();
+      $('#braresultbutton').hide();
+
+      // $.post("/bra-calculator-results.php",{bustmeasurement: bustval,bandmeasurement: bandval,brasize: brasize}, function(data){console.log(data)});
+    }
+
+    function adjustBraResult(){
+      bandval = parseFloat($( "#bandmeasurement" ).val());
+      bustval = parseFloat($( "#bustmeasurement" ).val());
+
+      var bandsize = Math.round(bandval/2)*2; // Make all calculations based on a rounded bandsize
+
+      var cupdiff = bustval-bandsize;
+
+      var cupalphabet = ['AA','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+
+      var cupindex = parseInt(cupdiff+0.5);
+
+      var cupsize = cupalphabet[cupindex];
+      brasize = bandsize+cupsize;
+
+      if(cupindex < 0) {
+        $("#braresult").html("Double-check; is your bust really smaller than your band?");
+      }
+      else if(cupindex >= cupalphabet.length){
+        $("#braresult").html("Wow! You might want to double-check your measurements; or just contact us!");
+      }
+      else {
+        $("#braresult").html(brasize+" !");
+      }
+
+    }
+
+    $(function() {
+
+      var bustselect = $( "#bustmeasurement" );
+      var bustslider = $( "<div id='bustslider'></div>" ).slider({
+        min: parseFloat(20),
+        max: parseFloat(65),
+        step: parseFloat(0.5),
+        range: "min",
+        value: bustselect.val(),
+        slide: function( event, ui ) {
+          bustselect.val(ui.value);
+          adjustBraResult();
+        }
+      });
+      $("#bustmeasurement-wrapper").append(bustslider);
+      $( "#bustmeasurement" ).change(function() {
+        bustslider.slider( "value", this.value );
+        adjustBraResult();
+      });
+
+      var bandselect = $( "#bandmeasurement" );
+      var bandslider = $( "<div id='bandslider'></div>" ).slider({
+        min: parseFloat(20),
+        max: parseFloat(65),
+        step: parseFloat(0.5),
+        range: "min",
+        value: bandselect.val(),
+        slide: function( event, ui ) {
+          bandselect.val(ui.value);
+          adjustBraResult();
+        }
+      });
+      $("#bandmeasurement-wrapper").append(bandslider);
+      $( "#bandmeasurement" ).change(function() {
+        bandslider.slider( "value", this.value );
+        adjustBraResult();
+      });
+
+    });
+
+  </script>
+
+  <style>
+    #footer {
+    background-color: #ddd;
+    border-top: 1px solid #bbb;
+     padding-top: 3em;
+     width: 100%
+    }
+    #footer a {
+      text-transform: uppercase;
+    }
+    #footer .breadcrumb {
+      background-color: inherit;
+      margin: 0;
+      padding: 0;
+    }
+    #footer .breadcrumb li {
+      text-shadow: none;
+    }
+    #footer .breadcrumb>li>.divider {
+      color: #999;
+    }
+    /* Fill the footer space horizontally */
+    #footer [class*="span"]:last-child {
+    text-align: right;
+    }
+
+    #footer input[type=text],
+    #footer input[type=email] {
+      border-radius: 0;
+      border-color: white;
+      box-shadow: none;
+    }
+
+    .input-mediumsmall {
+      width: 125px;
+    }
+
+    .input-append .add-on {
+      padding: 0;
+      background: none;
+      border: none;
+    }
+    .input-append .add-on:last-child {
+      border-radius: 0;
+    }
+    .input-append .add-on input {
+      border: 4px solid #999;
+      background: #999;
+      color: white;
+      text-shadow: none;
+      text-transform: uppercase;
+      border-radius: 0;
+
+    }
+
+    .narrow-window {
+      width: 762px; /* for reducing overall width of page */
+    }
+
+    .hero-unit {
+      text-align: center;
+      padding: 1.5em 0;
+      line-height: 0;
+      background-color: #bbb;
+      border-top: 1px solid #999;
+      border-radius: 0;
+      border-bottom: 1px solid #999;
+      margin-bottom: 0;
+    }
+    .hero-unit iframe,
+    .hero-unit img {
+      background-color: black;
+      box-shadow: 0 0 50px #333;
+    }
+    body { overflow-y: scroll;}
+    body, input, textarea { font-family: 'Titillium Web'; }
+    h1 { font-size: 1.75em; color: #532f90; }
+    h2 { font-size: 1.6em; }
+    h3 { font-size: 1.5em; }
+    a { color: #42b6b3; }
+    .nav { margin-bottom: 1.5em; }
+    .nav-pills>li[class*="span"] {
+      margin: 0;
+    }
+    .nav-pills>li>a {
+      background-color: #42b6b3;
+      margin: 0;
+      color: white;
+      text-transform: lowercase;
+      text-align: center;
+      padding: 2em 0;
+      font-size: 1.1em;
+      border-radius: 0;
+    }
+    .nav-pills>li>a:hover {
+      background-color: #3eadab;
+    }
+    .nav-pills>li {
+      border-left: 1px solid #5acdc8;
+      border-right: 1px solid #399d9d;
+    }
+    .nav-pills>li:first-child {
+      border-left: none;
+    }
+    .nav-pills>li:last-child {
+      border-right: none;
+    }
+    .nav-pills>li:last-child>a {
+      border-bottom-right-radius: 10px;
+    }
+    .nav-pills>li { margin: 0; }
+    .nav-pills>li.selected>a {
+      background-color: #3ca9a6;
+    }
+    .nav-pills>li.logo { margin-right: 1em; border: none; }
+    .nav-pills>li.logo>a {
+      border-radius: 0 0 10px 10px;
+      color: #54238e;
+      background-color: #54238e;
+      background-image: url('logo-nav.png');
+      background-repeat: no-repeat;
+      background-position: center center;
+      font-size: 1px;
+      padding: 30px;
+    }
+
+    hr { border: 1px dashed #ccc; padding: 2px; }
+
+    /* center a series of spans horizontally */
+    [class*="span"]:first-child {
+    margin-left: 10px;
+    }
+
+    .well {
+      padding: 0;
+      background-color: #f0f0f0;
+    }
+
+    .hero-wells .well {
+      text-align: center;
+    }
+    .hero-wells .well .well-content {
+      height: 175px;
+    }
+
+    ::-webkit-input-placeholder {
+       font-style: italic;
+    }
+
+    ::-moz-placeholder {
+       font-style: italic;
+    }
+
+    :-ms-input-placeholder {  
+       font-style: italic;
+    }
+
+    .credits-list .row-fluid {
+      padding-bottom: 1em;
+    }
+
+
+    .inset-left {
+      float: left;
+      margin: 0 1em 1em 0;
+    }
+
+    .inset-right {
+      float: right;
+      margin: 0 0 1em 1em;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .inline {
+      display: inline;
+    }
+
+    .align-right {
+      text-align: right;
+    }
+
+    .align-right .thumbnail {
+      display: inline-block;
+    }
+
+
+    .input-prepend .add-on,
+    .ui-widget-header {
+
+      background-image: linear-gradient(bottom, #20B4B4 38%, #24BFBF 69%);
+      background-image: -o-linear-gradient(bottom, #20B4B4 38%, #24BFBF 69%);
+      background-image: -moz-linear-gradient(bottom, #20B4B4 38%, #24BFBF 69%);
+      background-image: -webkit-linear-gradient(bottom, #20B4B4 38%, #24BFBF 69%);
+      background-image: -ms-linear-gradient(bottom, #20B4B4 38%, #24BFBF 69%);
+
+      background-image: -webkit-gradient(
+        linear,
+        left bottom,
+        left top,
+        color-stop(0.38, #20B4B4),
+        color-stop(0.69, #24BFBF)
+      );
+
+      color: white;
+      text-shadow: 0 1px 0 #333;
+    }
+    #braresult { text-align: center; color: #20b4b4; }
+
+    #bandmeasurement-wrapper, #bustmeasurement-wrapper {
+      padding-top: 0.4em;
+    }
+
+
+    .ui-slider .ui-slider-handle {
+        width: 2.2em;
+        height: 2.2em;
+    }
+    .ui-slider-horizontal {
+      height: 1.8em;
+    }
+  </style>
+</head>
+<body>
+
+<div class="narrow-window container">
+  <form id="brasize">
+    <div class="row-fluid">
+      <span class="span9">
+        <h3>Step 1: Measure your band size.</h3>
+
+        <ul>
+          <li>Start by wearing a thin, non-padded bra.</li>
+          <li>Measure directly under your bust, around your ribcage.
+            <li>Be sure the tape measure does not drop in the back and is pulled firmly.</li>
+          </li>
+          <li>This is your band measurement, choose it below.</li>
+        </ul>
+
+      </span>
+
+      <span class="span3">
+        <img src="band-measurement.jpg" class="measurementimage" />
+      </span>
+    </div>
+    <div class="row-fluid">
+      <span class="span7">
+        <div id="bandmeasurement-wrapper"></div>
+      </span>
+      <span class="span3">
+        <div class="input-prepend">
+          <span class="add-on">Band</span>
+          <input type="number" name="bandmeasurement" id="bandmeasurement" value="34" min="20" max="50" step="0.5" style="width: 3em" />
+        </div>
+      </span>
+    </div>
+    <hr/>
+    <div class="row-fluid">
+      <span class="span9">
+        <h3>Step 2: Measure your cup size.</h3>
+
+        <ul>
+          <li>Measure around the bust at the fullest part.</li>
+          <li>Make sure the tape measure is straight and pulled firmly without pushing in the breasts.</li>
+          <li>This is your cup size measurement, choose it below.</li>
+        </ul>
+
+      </span>
+
+      <span class="span3">
+        <img src="bust-measurement.jpg" class="measurementimage" />
+      </span>
+    </div>
+    <div class="row-fluid">
+      <span class="span7">
+        <div id="bustmeasurement-wrapper"></div>
+      </span>
+      <span class="span3">
+        <div class="input-prepend">
+          <span class="add-on">Bust</span>
+          <input type="number" name="bustmeasurement" id="bustmeasurement" value="34" min="20" max="65" step="0.5" style="width: 3em" />
+        </div>
+      </span>
+    </div>
+    <hr />
+    <div class="row-fluid">
+      <center>
+        <a id="braresultbutton" class="btn btn-large btn-info" onclick="showResult()">
+          Your recommended bra size is...
+        </a>
+        <h1 id="braresult" style="display:none; ">34D !</h1>
+      </center>
+      <div id="braresulttext" style="display: none;">
+        <p>Start with this size and see how it feels.  You may need to adjust the band or cup up or down.  However, at Bust’DD we never recommend going up more than one band size, even if it fits much tighter than you are used to.  The larger the band, the less support you will be getting.  At least 80% of the support should come from your band.</p>
+        <a href="http://www.bustdd.com/talk-to-us">Click here to contact us!</a>
+      </div>
+    </div>
+
+  </form>
+</div>
+
+</body>
+</html>
